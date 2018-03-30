@@ -1,0 +1,10 @@
+将file1.txt和file2.txt合并到file.txt
+
+$ cat file1.txt file2.txt > file.txt
+
+也可以只使用cat命令读入一个文件，然后使用>>将文本流追加到另一个文件的末位。
+用法示例：
+
+将file1.txt追加到file2.txt的末尾
+
+$ cat file1.txt >> file2.txt
