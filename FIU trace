@@ -1,0 +1,19 @@
+Downloading the FIU trace from http://iotta.snia.org/traces/390
+We can know more about the FIU SRCMap trace from http://sylab-srv.cs.fiu.edu/doku.php?id=projects:srcmap:start
+We can know more about the FIU IODedup http://sylab-srv.cs.fiu.edu/doku.php?id=projects:iodedup:start
+
+FIU Trace Format
+The traces files (one per day) are in ASCII and each record is as follows:
+[ts in ns] [pid] [process] [lba] [size in 512 Bytes blocks] [Write or Read] [major device number] [minor device number] [MD5 per 4096 Bytes]
+
+In the case of the homes traces, the format is different for the digests:
+[ts in ns] [pid] [process] [lba] [size in 512 Bytes blocks] [Write or Read] [major device number] [minor device number] [MD5 per 512 Bytes]
+
+Disksim Trace Format
+
+[arrive time in ms] [device number] [block number in sector] [request size in sector unit] [request flag read(1) or write(0)]
+
+作者：海角hust
+链接：https://www.jianshu.com/p/7f859993b8d7
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
