@@ -1,0 +1,46 @@
+#include<iostream>
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<set>
+
+
+ using namespace std;
+
+ int main(){
+      char buffer[400];
+      set<int> s;
+    FILE *fp = fopen("webmail.1-10","r");
+    if(fp==NULL)
+        printf("open read file error\n");
+
+    unsigned int time;
+long int blkno;
+    long int max_blkno;
+int bcount;
+int flags;
+int addr_count;
+int trace_count;
+//string hash;
+char hash[300];
+ while(fgets(buffer, 400, fp)) {
+
+    //    sscanf(buffer, "%f %ld %d %d %s\n", &time, &blkno, &bcount, &flags, hash);
+        sscanf(buffer, "%u %ld %d %d %s\n", &time, &blkno, &bcount, &flags, hash);
+        s.insert(blkno);
+        if(flags==0)
+            trace_count++;
+
+ }
+ fclose(fp);
+ addr_count=s.size();
+// fclose(stream);
+printf("%d\n",addr_count);
+printf("%d\n",trace_count);
+printf("%f %%\n",(float)addr_count/(float)trace_count*100);
+ printf("success!");
+    return 0;
+
+
+ return 0;
+ }
