@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "string.h"
+
+#define DELTA_TIME 0.5  //0.5ms,时间差
+
+int main(){
+    int trace[10000];
+    char buffer[400];
+    double time;
+    double sum_time;
+    double now_time;
+    long int blkno;
+    int time_count;
+    int bcount,flags;
+    double ave_time;
+    long int trace_num=0;   //统计当前trace的条数
+    char hash[300];
+    FILE *fp1=fopen("webmail.1","r");
+    if(fp1==NULL)
+        printf("open webmail.1-21 error");
+
+    FILE *fp2=fopen("test.time","w");
+    if(fp2==NULL)
+        printf("open test.time error");
+
+  while(fgets(buffer, 400, fp1)) {
+        sscanf(buffer, "%lf %ld %d %d %s\n", &time, &blkno, &bcount, &flags, hash);
+         time/=1000;   //us
+         time/=1000;   //ms
+         time/=1000;    //s
+         time/=60;   //每分钟
+         time/=10;   //十分钟一个点
+
+         fprintf(fp2,"%lf\n",time);                  //将原始时间文件转化为十分钟一个计数点
+    }
+    fclose(fp2);
+    fclose(fp1);
+
+    FILE *fp3=fopen("count.txt","w");
+    if(fp3==NULL)
+        printf("open count errror!");
+
+   FILE* fp4=fopen("test.time","r");
+    if(fp4==NULL)
+        printf("open test.time error!");
+
+        int point=1;
+        trace[0]=0;
+    while(fgets(buffer,400,fp4)){
+
+        sscanf(buffer,"%lf\n",&time);
+      //  printf("time=%lf\n",time);
+        trace_num++;
+        if(time >= point)
+        {
+        point++;
+       // printf("point=%d  ",point);
+        fprintf(fp3,"%d\n",trace_num);                  //每十分钟的计数点转化为trace num的坐标
+        trace[point-1]=trace_num;
+    //    printf("trace_num=%d\n",trace_num);
+        }
+
+    }
+    trace[point]=trace_num;   //末尾值加入
+fclose(fp3);
+fclose(fp4);
+
+
+    FILE *fp5 = fopen("complete_response_time.txt","r");
+ //  FILE *fp = fopen("lhj.test","r");
+    if(fp5==NULL)
+        printf("open read file error\n");
+
+    FILE *fp6 = fopen("every_count_response_time.xls","w");
+    if(fp6==NULL)
+        printf("open response_time.txt error!");
+ //   FILE *stream=fopen("webmail.1-10_cut_time","w");
+   //FILE *stream=fopen("lhj_cut_time","w");
+//    if(stream==NULL)
+ //       printf("open write file error\n");
+int j=1;
+ while(fgets(buffer, 400, fp5)) {
+        sscanf(buffer, "%lf\n", &now_time);
+        sum_time+=now_time;
+        time_count++;
+        if(time_count >= trace[j])
+        {
+            ave_time=sum_time/(trace[j]-trace[j-1]);
+            j++;
+            sum_time=0.0;
+        fprintf(fp6,"%lf\n",ave_time);
+        }
+    //    fgets(buffer, 400, fp);
+      //  sscanf(buffer, "%u %ld %d %d %s\n", &now_time, &now_blkno, &now_bcount, &now_flags, now_hash);
+     // now_time=now_time-
+      //  time_diff=now_time-time_count*DELTA_TIME-last_time;
+
+ }
+ fclose(fp5);
+ fclose(fp6);
+
+}
